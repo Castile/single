@@ -87,7 +87,7 @@
  	}
 
 
-### 为什么这样写呢？我们来解释几个关键点：###
+###  为什么这样写呢？我们来解释几个关键点：  ###
 1. 为了防止new Singleton被执行多次，因此在new操作之前加上Synchronized 同步锁，锁住整个类（注意，这里不能使用对象锁）。
 2. 进入Synchronized 临界区以后，还要再做一次判空。因为当两个线程同时访问的时候，线程A构建完对象，线程B也已经通过了最初的判空验证，不做第二次判空的话，线程B还是会再次构建instance对象。
 
@@ -175,10 +175,10 @@ ctorInstance(memory);  //2：初始化对象
     }
 
  
-###**那么问题来了，volatile到底是个什么玩意儿呢？在维基百科中是这样说的：** ###
+那么问题来了，volatile到底是个什么玩意儿呢？在维基百科中是这样说的:
 > The volatile keyword indicates that a value may change between different accesses, it prevents an optimizing compiler from optimizing away subsequent reads or writes and thus incorrectly reusing a stale value or omitting writes. 
 
-###  简单点说就是，volatile修饰符阻止了变量访问前后的指令重排，保证了指令的执行顺序。 ###
+###  简单点说就是，volatile修饰符阻止了变量访问前后的指令重排，保证了指令的执行顺序。  ###
 经过volatile的修饰，当线程A执行instance = new Singleton的时候，JVM执行顺序是什么样？始终保证是下面的顺序：
 
 1. memory =allocate();    //1：分配对象的内存空间 
@@ -189,8 +189,8 @@ ctorInstance(memory);  //2：初始化对象
 
 	如此在线程B看来，instance对象的引用要么指向null，要么指向一个初始化完毕的Instance，而不会出现某个中间态，保证了安全。
 
-----------
-## 说了那么多，其实这种方法还是有漏洞的，如果通过**【反射】**的方式，仍然可以构建多个对象。这个问题我会在单例设计模式（二）中解决，在哪里我会介绍一种更为优雅的单例设计模式实现 ##
+---------
+## 说了那么多，其实这种方法还是有漏洞的，如果通过 【反射】 的方式，仍然可以构建多个对象。这个问题我会在单例设计模式（二）中解决，在哪里我会介绍一种更为优雅的单例设计模式实现  ##
 
 
 
